@@ -3411,13 +3411,14 @@ class Mod(commands.Cog):
         heads_up_message = f'You have been banned from {ctx.guild.name} {until}. Reason: {reason}'
 
         try:
-            await member.send(heads_up_message)  # type: ignore  # Guarded by AttributeError
-        except (AttributeError, discord.HTTPException):
-            # best attempt, oh well.
-            pass
-
-        reason = safe_reason_append(reason, until)
-        await ctx.guild.ban(member, reason=reason)
+            try:
+             await member.send(heads_up_message)  # type: ignore
+            except discord.Forbidden:
+                pass
+            reason = safe_reason_append(reason, until)
+            await ctx.guild.ban(member, reason=reason)
+        except (AttributeError, discord.HTTPException:
+            return await ctx.send('I do not have permission to execute this action.')
         zone = await reminder.get_timezone(ctx.author.id)
         timer = await reminder.create_timer(
             duration.dt,

@@ -3417,7 +3417,7 @@ class Mod(commands.Cog):
                 pass
             reason = safe_reason_append(reason, until)
             await ctx.guild.ban(member, reason=reason)
-        except (AttributeError, discord.HTTPException:
+        except discord.Forbidden:
             return await ctx.send('I do not have permission to execute this action.')
         zone = await reminder.get_timezone(ctx.author.id)
         timer = await reminder.create_timer(
